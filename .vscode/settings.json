@@ -1,0 +1,9 @@
+{
+	"workbench.editorAssociations": [
+		{
+			"viewType": "hexEditor.hexedit",
+			"filenamePattern": "*.bin"
+		}
+	],
+	"hexeditor.dataInspector.autoReveal": false
+}
