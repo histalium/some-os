@@ -1,9 +1,10 @@
+[org 0x7c00]
 mov ah, 0x00
 mov al, 0x12
 int 0x10
 
 mov ah, 0x0e ; tty mode
-mov al, 'H'
+mov al, [g]
 mov bl, 0x00
 
 print:
@@ -17,6 +18,9 @@ print:
 ; A simple boot sector program that loops forever
 loop:
     jmp loop
+
+g:
+    db "G"
 
 times 510-($-$$) db 0
 dw 0xaa55
