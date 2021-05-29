@@ -1,4 +1,8 @@
 [org 0x7c00]
+
+mov bp, 0x8000
+mov sp, bp
+
 mov ah, 0x00
 mov al, 0x12
 int 0x10
@@ -118,7 +122,28 @@ int 0x10
 add cx, 0x02
 int 0x10
 
+
 mov ah, 0x0e ; tty mode
+mov bl, 0x03
+
+push 'A'
+push 'B'
+push 'C'
+
+mov al, 'D'
+push eax
+
+mov al, [0x7ffe] ; 0x8000 - 2
+int 0x10
+
+pop bx
+mov al, bl
+int 0x10
+
+pop bx
+mov al, bl
+int 0x10
+
 mov al, [g]
 mov bl, 0x00
 
