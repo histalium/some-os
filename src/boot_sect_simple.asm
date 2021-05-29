@@ -17,111 +17,33 @@ int 0x10
 ; # #     # #
 ;    #   #
 ;     # #
-mov ah, 0x0c
-mov al, 0x02
-mov cx, 0x32
+xor ax, ax
+mov bx, space
+mov cx, 0x30
 mov dx, 0x64
-int 0x10
-add cx, 0x06
-int 0x10
-mov cx, 0x33
-add dx, 0x01
-int 0x10
-add cx, 0x04
-int 0x10
-mov cx, 0x32
-add dx, 0x01
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x01
-int 0x10
-mov cx, 0x32
-add dx, 0x01
-int 0x10
-add cx, 0x02
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x02
-int 0x10
-mov cx, 0x31
-add dx, 0x01
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x02
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x02
-int 0x10
-add cx, 0x01
-int 0x10
-
-mov cx, 0x30
-add dx, 0x01
-int 0x10
-line:
+lpix:
+    pusha
+    push dx
+    push cx
+    mov dl, [bx]
+    push dx
+    ;push 'y'
+    call pix
+    ;pop ax
+    pop bx
+    pop bx
+    pop bx
+    popa
+    add bx, 0x01
+    add ax, 0x01
     add cx, 0x01
-    int 0x10
-    cmp cx, 0x3a
-    jne line
-
-mov cx, 0x30
-add dx, 0x01
-int 0x10
-add cx, 0x02
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x01
-int 0x10
-add cx, 0x02
-int 0x10
-
-mov cx, 0x30
-add dx, 0x01
-int 0x10
-add cx, 0x02
-int 0x10
-add cx, 0x06
-int 0x10
-add cx, 0x02
-int 0x10
-
-mov cx, 0x33
-add dx, 0x01
-int 0x10
-add cx, 0x04
-int 0x10
-
-mov cx, 0x34
-add dx, 0x01
-int 0x10
-add cx, 0x02
-int 0x10
-
+    cmp cx, 59
+    jne end1
+    mov cx, 0x30
+    add dx, 0x01
+end1:
+    cmp ax, 110
+    jne lpix
 
 mov ah, 0x0e ; tty mode
 mov bl, 0x03
@@ -159,10 +81,24 @@ print:
 loop:
     jmp loop
 
+pix:
+    mov ah, 0x0c   ; set pixel
+    mov bx, sp
+    add bx, 0x02
+    mov dx, [bx]
+    mov al, dl   ; color
+    add bx, 0x02
+    mov cx, [bx]   ; x
+    add bx, 0x02
+    mov dx, [bx]   ; y
+    mov bx, 0x00
+    int 0x10
+    ret
+
 g:
     db "G"
 space:
-    db 4, 4, 0, 4
+    db 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 0, 0  , 0, 0, 4, 0, 4, 4, 4, 0, 4, 0, 0  , 0, 4, 4, 0, 4, 4, 4, 0, 4, 4, 0  , 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4  , 4, 0, 4, 4, 4, 4, 4, 4, 4, 0, 4  , 4, 0, 4, 0, 0, 0, 0, 0, 4, 0, 4  , 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0  , 0, 0, 0, 0, 4, 0, 4, 0, 0, 0, 0
 
 times 510-($-$$) db 0
 dw 0xaa55
