@@ -53,6 +53,20 @@ end1:
     cmp ax, 110
     jne lpix
 
+
+mov bx, 0x9000  ; mem location
+mov ah, 0x02    ; read int 0x13
+mov al, 0x01    ; read 1 sector
+mov cl, 0x03    ; sector to read
+mov ch, 0x00    ; cylinder to read
+mov dh, 0x00    ; head to read
+mov dl, 0x00    ; drive number
+int 0x13        ; read from disk
+
+mov eax, 0x00009000
+call eax
+call eax
+
 mov ah, 0x0e ; tty mode
 mov bl, 0x03
 
@@ -112,3 +126,15 @@ dw 0xaa55
 db 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 0, 0  , 0, 0, 4, 0, 4, 4, 4, 0, 4, 0, 0  , 0, 4, 4, 0, 4, 4, 4, 0, 4, 4, 0  , 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4  , 4, 0, 4, 4, 4, 4, 4, 4, 4, 0, 4  , 4, 0, 4, 0, 0, 0, 0, 0, 4, 0, 4  , 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0  , 0, 0, 0, 0, 4, 0, 4, 0, 0, 0, 0
 
 times 1024-($-$$) db 0
+
+    pusha
+    mov ah, 0x0e ; tty mode
+    mov al, '1'
+    mov bl, 0x02  ; green text
+    int 0x10
+    popa
+    ret
+
+
+times 1474560-($-$$) db 0
+dw 0xaaff
