@@ -1,11 +1,12 @@
+[bits 16]
 [org 0x7c00]
 
 mov bp, 0x8000
 mov sp, bp
 
-mov ah, 0x00
-mov al, 0x12
-int 0x10
+; mov ah, 0x00
+; mov al, 0x12
+; int 0x10
 
 mov bx, 0x9000  ; mem location
 mov ah, 0x02    ; read int 0x13
@@ -25,33 +26,33 @@ int 0x13        ; read from disk
 ; # #     # #
 ;    #   #
 ;     # #
-xor ax, ax
-mov bx, 0x9000
-mov cx, 0x30
-mov dx, 0x64
-lpix:
-    pusha
-    push dx
-    push cx
-    mov dl, [bx]
-    push dx
-    ;push 'y'
-    call pix
-    ;pop ax
-    pop bx
-    pop bx
-    pop bx
-    popa
-    add bx, 0x01
-    add ax, 0x01
-    add cx, 0x01
-    cmp cx, 59
-    jne end1
-    mov cx, 0x30
-    add dx, 0x01
-end1:
-    cmp ax, 110
-    jne lpix
+; xor ax, ax
+; mov bx, 0x9000
+; mov cx, 0x30
+; mov dx, 0x64
+; lpix:
+;     pusha
+;     push dx
+;     push cx
+;     mov dl, [bx]
+;     push dx
+;     ;push 'y'
+;     call pix
+;     ;pop ax
+;     pop bx
+;     pop bx
+;     pop bx
+;     popa
+;     add bx, 0x01
+;     add ax, 0x01
+;     add cx, 0x01
+;     cmp cx, 59
+;     jne end1
+;     mov cx, 0x30
+;     add dx, 0x01
+; end1:
+;     cmp ax, 110
+;     jne lpix
 
 
 mov bx, 0x9000  ; mem location
@@ -90,6 +91,15 @@ int 0x10
 
 mov al, [g]
 mov bl, 0x00
+
+
+mov ax, 0xb000
+mov es, ax
+mov ax, 0x8000
+mov bl, 0x5a
+mov [es:0x8000], bl
+mov bl, 0x5a
+mov [es:0x8001], bl
 
 print:
     int 0x10     ; print H
